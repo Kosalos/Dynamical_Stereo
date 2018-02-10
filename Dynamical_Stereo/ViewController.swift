@@ -7,10 +7,11 @@ let dynamical = Dynamical()
 // used during development of rotated() layout routine to simulate other iPad sizes
 //let scrnSz:[CGPoint] = [ CGPoint(x:768,y:1024), CGPoint(x:834,y:1112), CGPoint(x:1024,y:1366) ] // portrait 9.7, 10.5, 12.9" iPads
 //let scrnIndex = 0
-//let scrnLandscape:Bool = false
+//let scrnLandscape:Bool = true
 
 var paceRotate = CGPoint()
 var pointSize:Float = 1
+var pointSpread:Float = 0.2
 
 var vc:ViewController! = nil
 
@@ -33,6 +34,8 @@ class ViewController: UIViewController {
     @IBOutlet var color2XY: DeltaView!
     @IBOutlet var color2Z: SliderView!
     @IBOutlet var ptSize: SliderView!
+    @IBOutlet var ptSpread: SliderView!
+    @IBOutlet var ptCount: SliderView!
     @IBOutlet var slButton: UIButton!
     @IBOutlet var helpButton: UIButton!
     @IBOutlet var resetButton: UIButton!
@@ -59,7 +62,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sList = [ paramZ,deltaZ,color1Z,color2Z,ptSize ]
+        sList = [ paramZ,deltaZ,color1Z,color2Z,ptSize,ptSpread,ptCount ]
         dList = [ paramXY,deltaXY,color1XY,color2XY]
         
         gDevice = MTLCreateSystemDefaultDevice()
@@ -84,19 +87,24 @@ class ViewController: UIViewController {
         super.viewDidAppear(animated)
         vc = self
         control.formula = 0
+        pointSpread = 0.37
         resetParams()
         
-        deltaXY.initializeFloat1(&control.delta0, 0,1, 0.1, "D 1,2")
+        deltaXY.initializeFloat1(&control.delta0, 0,0.2, 0.02, "D 1,2")         // make delta controls less sensitive
         deltaXY.initializeFloat2(&control.delta1)
-        deltaZ.initializeFloat(&control.delta2, .delta, 0,1, 0.1, "D 3")
-        color1XY.initializeFloat1(&control.color1r, 0,1, 0.5, "C1 R,G")
-        color1XY.initializeFloat2(&control.color1g)
-        color1Z.initializeFloat(&control.color1b, .delta, 0,1, 0.5, "C1 B")
-        color2XY.initializeFloat1(&control.color2r, 0,1, 0.5, "C2 R,G")
-        color2XY.initializeFloat2(&control.color2g)
-        color2Z.initializeFloat(&control.color2b, .delta, 0,1, 0.5, "C2 B")
-        ptSize.initializeFloat(&pointSize, .delta, 1,5, 0.5, "P Size")
+        deltaZ.initializeFloat(&control.delta2, .delta, 0,0.2, 0.02, "D 3")
         
+        color1XY.initializeFloat1(&control.color1r, 0,1, 0.5, "C1")
+        color1XY.initializeFloat2(&control.color1g)
+        color1Z.initializeFloat(&control.color1b, .delta, 0,1, 0.5, "")
+        color2XY.initializeFloat1(&control.color2r, 0,1, 0.5, "C2")
+        color2XY.initializeFloat2(&control.color2g)
+        color2Z.initializeFloat(&control.color2b, .delta, 0,1, 0.5, "")
+        
+        ptSize.initializeFloat(&pointSize, .delta, 1,15, 0.5, "Psize")
+        ptSpread.initializeFloat(&pointSpread, .delta, 0.001,1, 0.02, "Pdelta")
+        ptCount.initializeInt32(&control.ptCount, .delta, 50,500,50, "Pcount")
+
         updateWidgets()
         dynamical.initialize()
     }
@@ -113,13 +121,13 @@ class ViewController: UIViewController {
     @objc func screenRotated() {
         let xs:CGFloat = view.bounds.width
         let ys:CGFloat = view.bounds.height
-//        let xs = scrnLandscape ? scrnSz[scrnIndex].y : scrnSz[scrnIndex].x
-//        let ys = scrnLandscape ? scrnSz[scrnIndex].x : scrnSz[scrnIndex].y
+        //let xs = scrnLandscape ? scrnSz[scrnIndex].y : scrnSz[scrnIndex].x
+        //let ys = scrnLandscape ? scrnSz[scrnIndex].x : scrnSz[scrnIndex].y
         
         let gap:CGFloat = 5
         let cxs:CGFloat = 140   // slider width
         let bys:CGFloat = 35    // slider height
-        let fullWidth:CGFloat = 760
+        let fullWidth:CGFloat = 720
         let fullHeight:CGFloat = cxs + bys + 20
         let left:CGFloat = (xs - fullWidth)/2
         
@@ -138,19 +146,35 @@ class ViewController: UIViewController {
         deltaXY.frame = CGRect(x:x, y:y, width:cxs, height:cxs)
         deltaZ.frame  = CGRect(x:x, y:y + cxs+gap, width:cxs, height:bys)
         x += cxs + gap * 2
-        color1XY.frame = CGRect(x:x, y:y, width:cxs, height:cxs)
-        color1Z.frame  = CGRect(x:x, y:y + cxs+gap, width:cxs, height:bys)
-        x += cxs + gap
-        color2XY.frame = CGRect(x:x, y:y, width:cxs, height:cxs)
-        color2Z.frame  = CGRect(x:x, y:y + cxs+gap, width:cxs, height:bys)
-        x += cxs + gap * 2
-        ptSize.frame  = CGRect(x:x, y:y, width:cxs, height:bys); y += bys + gap * 3
-        formulaSeg.frame  = CGRect(x:x, y:y, width:cxs, height:bys); y += bys + gap * 3
-        let x2 = x + cxs/2 - 20
-        autoOnOff.frame  = CGRect(x:x, y:y, width:cxs/2, height:bys)
-        resetButton.frame  = CGRect(x:x2, y:y, width:cxs, height:bys); y += bys + gap * 3
-        slButton.frame  = CGRect(x:x, y:y, width:cxs/2, height:bys)
-        helpButton.frame  = CGRect(x:x2, y:y, width:cxs, height:bys)
+        
+        // color (small) -----------
+        let cw:CGFloat = 100
+        let ch:CGFloat = cxs / 2.7
+        var cy:CGFloat = y
+        color1XY.frame = CGRect(x:x, y:cy, width:cw, height:ch);   cy += ch
+        color1Z.frame  = CGRect(x:x, y:cy, width:cw, height:bys);  cy += bys + gap + 2
+        color2XY.frame = CGRect(x:x, y:cy, width:cw, height:ch);   cy += ch
+        color2Z.frame  = CGRect(x:x, y:cy, width:cw, height:bys)
+        x += cw + gap * 2
+        
+        // point -------------------
+        let pw:CGFloat = 150
+        y = by
+        ptSize.frame   = CGRect(x:x, y:y, width:pw, height:bys); y += bys + gap
+        ptSpread.frame = CGRect(x:x, y:y, width:pw, height:bys); y += bys + gap
+        ptCount.frame  = CGRect(x:x, y:y, width:pw, height:bys)
+
+        x += pw + gap * 2
+        y = by
+
+        // formula -----------------
+        let fw:CGFloat = 150
+        formulaSeg.frame  = CGRect(x:x, y:y, width:fw, height:bys); y += bys + gap * 3
+        let x2 = x + fw/2 - 20
+        autoOnOff.frame  = CGRect(x:x, y:y, width:fw/2, height:bys)
+        resetButton.frame  = CGRect(x:x2, y:y, width:fw, height:bys); y += 90
+        slButton.frame  = CGRect(x:x, y:y, width:fw/2, height:bys)
+        helpButton.frame  = CGRect(x:x2, y:y, width:fw, height:bys)
     }
     
     //MARK:-
@@ -169,7 +193,7 @@ class ViewController: UIViewController {
         default : break
         }
         
-        let hop:Float = fabs(max - min) / 20.0
+        let hop:Float = fabs(max - min) / 120.0 // less sensitive
         paramXY.initializeFloat1(&control.p0, min, max, hop, "P 1,2")
         paramXY.initializeFloat2(&control.p1)
         paramZ.initializeFloat(&control.p2, .delta, min,max, hop, "P 3")
@@ -182,31 +206,34 @@ class ViewController: UIViewController {
     //MARK:-
     
     func resetParams() {
+        control.ptCount = 300
+        
         switch control.formula {
         case 0 :
-            control.p0 = 9.46
-            control.p1 = 7.236
-            control.p2 = 4.517
+            pointSpread = 0.0125
+            control.p0 = +3.5193
+            control.p1 = +7.4715
+            control.p2 = +4.1325
         case 1 :
-            control.p0 = -0.043
-            control.p1 = 0.03
-            control.p2 = -3.53
+            control.p0 = -0.0338
+            control.p1 = +0.0401
+            control.p2 = -0.0021
         case 2 :
             control.p0 = 0.1038
             control.p1 = 0.5117
             control.p2 = 0.5503
         case 3 :
-            control.p0 = 3.01
-            control.p1 = -0.893
-            control.p2 = 0.046
+            control.p0 = +0.9795
+            control.p1 = +0.5270
+            control.p2 = +0.0750
         case 4 :
-            control.p0 = 0.02417
-            control.p1 = 0.31310
-            control.p2 = -1.1096
+            control.p0 = -0.0237
+            control.p1 = -0.1149
+            control.p2 = +0.4091
         case 5 :
-            control.p0 = -0.05995
-            control.p1 = 0.25060
-            control.p2 = 0.54715
+            control.p0 = 0
+            control.p1 = 0
+            control.p2 = 0
         default : break
         }
     }

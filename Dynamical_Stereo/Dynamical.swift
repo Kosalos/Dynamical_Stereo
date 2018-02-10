@@ -16,6 +16,7 @@ extension Control {
         delta0 = 0; delta1 = 0; delta2 = 0
         color1r = 1;  color1g = 1;  color1b = 1
         color2r = 1;  color2g = 1;  color2b = 1
+        ptCount = 100
     }
 }
 
@@ -50,7 +51,7 @@ class Dynamical {
     
     func reset() {
         var index:Int = 0
-        let scale:Float = 0.08
+        let scale = pointSpread
         for x in 0 ..< DWIDTH {
             let px = Float(x - DWIDTH/2) * scale
             for y in 0 ..< DWIDTH {
@@ -93,6 +94,8 @@ class Dynamical {
 
     func calcVertices() {
         if dBuffer == nil { return }
+        
+        reset()
         
         memset(zBuffer.contents(),0,zSize)
         dBuffer.contents().copyBytes(from: &dyn, count:dSize)

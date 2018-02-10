@@ -6,7 +6,7 @@ class Background: UIView {
         
         UIBezierPath(rect:rect).fill()
         
-//        // development of layout for different size iPads
+        // development of layout for different size iPads
 //        let xs = scrnLandscape ? scrnSz[scrnIndex].y : scrnSz[scrnIndex].x
 //        let ys = scrnLandscape ? scrnSz[scrnIndex].x : scrnSz[scrnIndex].y
 //        UIBezierPath(rect:CGRect(x:0, y:0, width:xs, height:ys)).fill()

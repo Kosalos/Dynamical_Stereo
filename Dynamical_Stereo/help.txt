@@ -1,7 +1,7 @@
 Dynamical System
 
 A cloud of points are set to a starting position,
-then 50 times they are each iterated through an equation to determine a new position.
+then they are each iterated through an equation to determine a new position.
 At certain parameter settings strange attractions result.
 At other settings the points diverge to chaos.
 
@@ -12,16 +12,19 @@ Press and hold to either side of center to affect the parameter in the specfied 
 
 A.  The equations have 3 control parameters.  Box P1,2 controls the first two, P3 the third.
 B.  When AutoChange is enabled these 3 delta values control the strength of the cycling effect on the parameters.
-C.  Set the R,G,B color of the point at the start position.
-D.  Set the color the points evolve to as they travel.
-E.  Set the point size.
-F.  Select the equation.
-G.  AutoChange on/off.
-H.  Reset the equation parameters.
-I.  Launch the Save/Load dialog.
+C.  Set R,G,B color of the point at the start position.
+D.  Set color the points evolve to as they travel.
+E.  Set point size.
+F.  Set positions of the points when the begin (grid centered on zero).
+G.  Set number of iterations of the equation.
+H.  Select the equation.
+I.  AutoChange on/off.
+J.  Reset the equation parameters.
+K.  Launch the Save/Load dialog.
 
 ------------------------------------------------------------------------------------------------
 Shader source code that calculates Dynamical System points
+Note: the first 50 iterations are not rendered, to give the attractor time to settle down.
 ------------------------------------------------------------------------------------------------
 
 float cheb(float v) { return 4 * pow(v,3) - 3 * v; }

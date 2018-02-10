@@ -81,22 +81,22 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LcI-uz-yiI" customClass="DeltaView" customModule="Dynamical_Stereo" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LcI-uz-yiI" customClass="DeltaView" customModule="Dynamical_Stereo" customModuleProvider="target">
                                 <rect key="frame" x="395" y="982" width="150" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p19-dV-t7t" customClass="SliderView" customModule="Dynamical_Stereo" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p19-dV-t7t" customClass="SliderView" customModule="Dynamical_Stereo" customModuleProvider="target">
                                 <rect key="frame" x="395" y="1154" width="150" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RSD-AS-P1Q" customClass="DeltaView" customModule="Dynamical_Stereo" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RSD-AS-P1Q" customClass="DeltaView" customModule="Dynamical_Stereo" customModuleProvider="target">
                                 <rect key="frame" x="561" y="982" width="150" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EXW-vO-lCP" customClass="SliderView" customModule="Dynamical_Stereo" customModuleProvider="target">
+                            <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EXW-vO-lCP" customClass="SliderView" customModule="Dynamical_Stereo" customModuleProvider="target">
                                 <rect key="frame" x="561" y="1154" width="150" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -145,6 +145,16 @@
                                     <outletCollection property="gestureRecognizers" destination="wuh-uz-4Kd" appends="YES" id="iWg-IX-BBX"/>
                                 </connections>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="faH-RQ-fwN" customClass="SliderView" customModule="Dynamical_Stereo" customModuleProvider="target">
+                                <rect key="frame" x="739" y="830" width="150" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOc-Fu-IIw" customClass="SliderView" customModule="Dynamical_Stereo" customModuleProvider="target">
+                                <rect key="frame" x="739" y="873" width="150" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -163,7 +173,9 @@
                         <outlet property="mtkViewR" destination="g30-ls-F4D" id="WQ9-mG-KAz"/>
                         <outlet property="paramXY" destination="e3e-tP-sxy" id="dzh-Dw-h2z"/>
                         <outlet property="paramZ" destination="bn3-qo-PrX" id="gLt-DB-hgH"/>
+                        <outlet property="ptCount" destination="LOc-Fu-IIw" id="4wg-G6-XqO"/>
                         <outlet property="ptSize" destination="PEo-c5-1Pk" id="knS-9q-stt"/>
+                        <outlet property="ptSpread" destination="faH-RQ-fwN" id="hcJ-IH-gXp"/>
                         <outlet property="resetButton" destination="3GH-uU-Muq" id="71d-j8-Di4"/>
                         <outlet property="slButton" destination="pNp-PC-gfZ" id="60L-xY-Y3d"/>
                     </connections>
@@ -340,6 +352,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="help" width="800" height="214"/>
+        <image name="help" width="1471" height="388"/>
     </resources>
 </document>

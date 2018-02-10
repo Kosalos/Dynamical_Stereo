@@ -15,6 +15,7 @@ typedef struct {
     float delta0,delta1,delta2;
     float color1r,color1g,color1b;
     float color2r,color2g,color2b;
+    int ptCount;
 } Control;
 
 typedef struct {

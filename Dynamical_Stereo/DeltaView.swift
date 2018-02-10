@@ -104,18 +104,24 @@ class DeltaView: UIView {
         ctx.strokePath()
         ctx.restoreGState()
 
-        UIColor.black.set()
-        context?.setLineWidth(2)
-        
-        drawVLine(CGFloat(scenter),0,bounds.height)
-        drawHLine(0,bounds.width,CGFloat(scenter))
+        if tag != 1 {       // no crosshair on small widgets
+            UIColor.black.set()
+            context?.setLineWidth(2)
+            
+            drawVLine(CGFloat(scenter),0,bounds.height)
+            drawHLine(0,bounds.width,CGFloat(scenter))
+        }
 
         let x = valueRatio(0) * bounds.width
         let y = (CGFloat(1) - valueRatio(1)) * bounds.height
         drawFilledCircle(CGPoint(x:x,y:y),15,UIColor.black.cgColor)
 
         // value ------------------------------------------
-        func formatted(_ v:Float) -> String { return String(format:"%6.4f",v) }
+        func formatted(_ v:Float) -> String {
+            if tag == 1 { return String(format:"%3.1f",v) }   // for small widgets
+            return String(format:"%6.4f",v)
+        }
+        
         //func formatted2(_ v:Float) -> String { return String(format:"%7.5f",v) }
         //func formatted3(_ v:Float) -> String { return String(format:"%d",Int(v)) }
         //func formatted4(_ v:Float) -> String { return String(format:"%5.2f",v) }

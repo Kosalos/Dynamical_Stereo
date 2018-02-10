@@ -16,7 +16,7 @@ kernel void dynShader
 {
     float3 pt,old = dyn[p].pos;
 
-    for(int i = 0; i < 50; ++i) {
+    for(int i = 0; i < 50 + control.ptCount; ++i) {
         switch(control.formula) {
             case 0 :
                 pt.x = old.x + 0.02 * (-control.p0 * old.x - old.y * old.y - old.z * old.z + control.p0 * control.p2);
@@ -52,17 +52,19 @@ kernel void dynShader
 
         old = pt;
         
-        uint index = atomic_fetch_add_explicit(&counter, 1, memory_order_relaxed);
-        if(index >= VMAX) return;
-        
-        device TVertex &v = vertices[index];
-        v.pos = pt;
-        
-        float ratio = float(i) / 50.0;
-        float cr = control.color1r + (control.color2r - control.color1r) * ratio;
-        float cg = control.color1g + (control.color2g - control.color1g) * ratio;
-        float cb = control.color1b + (control.color2b - control.color1b) * ratio;
-        v.color = float4(cr,cg,cb,1);
+        if(i > 50) {    // skip until attractor has settled down
+            uint index = atomic_fetch_add_explicit(&counter, 1, memory_order_relaxed);
+            if(index >= VMAX) return;
+            
+            device TVertex &v = vertices[index];
+            v.pos = pt;
+            
+            float ratio = float(i) / 50.0;
+            float cr = control.color1r + (control.color2r - control.color1r) * ratio;
+            float cg = control.color1g + (control.color2g - control.color1g) * ratio;
+            float cb = control.color1b + (control.color2b - control.color1b) * ratio;
+            v.color = float4(cr,cg,cb,1);
+        }
     }
 }
 
