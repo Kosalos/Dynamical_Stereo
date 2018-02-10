@@ -1,0 +1,63 @@
+Dynamical System
+
+A cloud of points are set to a starting position,
+then 50 times they are each iterated through an equation to determine a new position.
+At certain parameter settings strange attractions result.
+At other settings the points diverge to chaos.
+
+Pinch the screen to control zoom, slide 1 finger to rotate, 2 fingers to translate, tap to stop rotation.
+
+All the slider boxes work the same way:
+Press and hold to either side of center to affect the parameter in the specfied direction and speed.
+
+A.  The equations have 3 control parameters.  Box P1,2 controls the first two, P3 the third.
+B.  When AutoChange is enabled these 3 delta values control the strength of the cycling effect on the parameters.
+C.  Set the R,G,B color of the point at the start position.
+D.  Set the color the points evolve to as they travel.
+E.  Set the point size.
+F.  Select the equation.
+G.  AutoChange on/off.
+H.  Reset the equation parameters.
+I.  Launch the Save/Load dialog.
+
+------------------------------------------------------------------------------------------------
+Shader source code that calculates Dynamical System points
+------------------------------------------------------------------------------------------------
+
+float cheb(float v) { return 4 * pow(v,3) - 3 * v; }
+
+switch(control.formula) {
+case 0 :
+    pt.x = old.x + 0.02 * (-control.p0 * old.x - old.y * old.y - old.z * old.z + control.p0 * control.p2);
+    pt.y = old.y + 0.02 * (-old.y + old.x * old.y - control.p1 * old.x * old.z + control.p2);
+    pt.z = old.z + 0.02 * (-old.z + control.p1 * old.x * old.y + old.x * old.z);
+    break;
+case 1 :
+    pt.x = old.x + sin(cheb(old.y)) * control.p0;
+    pt.y = old.y + sin(cheb(old.x)) * control.p1;
+    pt.z = (old.x * old.y) * control.p2;
+    break;
+case 2 :
+    pt.x = old.y + control.p0 * old.z;
+    pt.y = control.p1 / old.y + control.p2 * old.y - old.x;
+    pt.z = old.x * old.x / 20.0 - control.p0 * old.y * old.x;
+    break;
+case 3 :
+    pt.x = old.x + 0.2 * (-control.p0 * old.x - old.y * old.y - old.z * old.z + control.p0);
+    pt.y = old.y + 0.2 * (old.y + old.x * old.y -control.p1 * old.x * old.z + control.p2);
+    pt.z = old.z + 0.2 * (-old.z + control.p1 * old.x * old.y + old.x * old.z);
+    break;
+case 4 :
+    pt.x = control.p0 * old.x - old.y * control.p2;
+    pt.y = -(control.p1 / old.y - old.y * control.p2) / old.x;
+    pt.z = -(control.p1 / old.x - old.y * control.p2) / (old.x * old.y);
+    break;
+case 5 :
+    pt.x = old.x + 0.031 * sin(cheb(old.y + old.z)) * control.p0;
+    pt.y = old.y + 0.031 * sin(cheb(old.x + old.z)) * control.p1;
+    pt.z = old.z + 0.31 * sin(old.x + old.y) * control.p2;
+    break;
+}
+
+old = pt;
+
