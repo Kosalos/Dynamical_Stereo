@@ -8,7 +8,7 @@ At other settings the points diverge to chaos.
 Pinch the screen to control zoom, slide 1 finger to rotate, 2 fingers to translate, tap to stop rotation.
 
 All the slider boxes work the same way:
-Press and hold to either side of center to affect the parameter in the specfied direction and speed.
+Press and hold to either side of center to affect the parameter in the specified direction and speed.
 
 A.  The equations have 3 control parameters.  Box P1,2 controls the first two, P3 the third.
 B.  When AutoChange is enabled these 3 delta values control the strength of the cycling effect on the parameters.
