@@ -2,25 +2,26 @@ import UIKit
 import Metal
 import simd
 
-extension TVertex {
-    init(_ p:float3) {
-        pos = p
-        color = float4(1,1,1,1)
-    }
-}
+//extension TVertex {
+//    init(_ p:float3) {
+//        self.init()
+//        pos = p
+//        color = float4(1,1,1,1)
+//    }
+//}
 
-extension Control {
-    init() {
-        formula = 0
-        p0 = 0;  p1 = 0;  p2 = 0
-        delta0 = 0; delta1 = 0; delta2 = 0
-        color1r = 1;  color1g = 1;  color1b = 1
-        color2r = 1;  color2g = 1;  color2b = 1
-        ptCount = 100
-    }
-}
+//extension Control {
+//    init() {
+//        formula = 0
+//        p0 = 0;  p1 = 0;  p2 = 0
+//        delta0 = 0; delta1 = 0; delta2 = 0
+//        color1r = 1;  color1g = 1;  color1b = 1
+//        color2r = 1;  color2g = 1;  color2b = 1
+//        ptCount = 100
+//    }
+//}
 
-let DWIDTH:Int = 15  // source points are an 3D cloud this wide
+let DWIDTH:Int = 15  // source points are a 3D cloud this wide
 let DCOUNT:Int = DWIDTH * DWIDTH * DWIDTH    // #points in grid
 
 let threadGroupCount = MTLSizeMake(20,1,1)
@@ -46,6 +47,13 @@ class Dynamical {
     let zSize:Int = MemoryLayout<Counter>.stride
     
     init() {
+        control.color1r = 1
+        control.color1g = 1
+        control.color1b = 1
+        control.color2r = 1
+        control.color2g = 1
+        control.color2b = 1
+
         reset()
     }
     
@@ -98,8 +106,8 @@ class Dynamical {
         reset()
         
         memset(zBuffer.contents(),0,zSize)
-        dBuffer.contents().copyBytes(from: &dyn, count:dSize)
-        cBuffer.contents().copyBytes(from: &control, count:cSize)
+        dBuffer.contents().copyMemory(from: &dyn, byteCount:dSize)
+        cBuffer.contents().copyMemory(from: &control, byteCount:cSize)
 
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let commandEncoder = commandBuffer.makeComputeCommandEncoder()!

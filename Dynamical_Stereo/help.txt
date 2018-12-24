@@ -5,6 +5,10 @@ then they are each iterated through an equation to determine a new position.
 At certain parameter settings strange attractions result.
 At other settings the points diverge to chaos.
 
+The image is rendered twice, for 'cross-eyed' 3D viewing.
+With the iPad held two feet away, slightly cross your eyes so that there is a third image in the middle.
+Relax your gaze, and concentrate only on that middle image, which is in 3D.
+
 Pinch the screen to control zoom, slide 1 finger to rotate, 2 fingers to translate, tap to stop rotation.
 
 All the slider boxes work the same way:

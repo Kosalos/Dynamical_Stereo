@@ -263,9 +263,9 @@ class DeltaView: UIView {
         let font = UIFont.init(name: "Helvetica", size:sz)!
         
         let textFontAttributes = [
-            NSAttributedStringKey.font: font,
-            NSAttributedStringKey.foregroundColor: color,
-            NSAttributedStringKey.paragraphStyle: paraStyle,
+            NSAttributedString.Key.font: font,
+            NSAttributedString.Key.foregroundColor: color,
+            NSAttributedString.Key.paragraphStyle: paraStyle,
             ]
         
         str.draw(in: CGRect(x:x, y:y, width:800, height:100), withAttributes: textFontAttributes)

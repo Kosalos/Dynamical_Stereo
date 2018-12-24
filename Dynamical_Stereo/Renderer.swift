@@ -2,7 +2,7 @@ import Metal
 import MetalKit
 import simd
 
-var translation = float3(0,0,170)
+var translation = float3(0,0,10)
 
 let alignedUniformsSize = (MemoryLayout<Uniforms>.size & ~0xFF) + 0x100
 let maxBuffersInFlight = 3

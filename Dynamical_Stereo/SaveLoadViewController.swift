@@ -46,7 +46,7 @@ class SaveLoadViewController: UIViewController,UITableViewDataSource, UITableVie
             cIndex = Int(cc.formula)
         }
         
-        cell.loadCell.setTitle(str, for: UIControlState.normal)
+        cell.loadCell.setTitle(str, for: UIControl.State.normal)
         cell.loadCell.backgroundColor = bColors[cIndex]
         return cell
     }

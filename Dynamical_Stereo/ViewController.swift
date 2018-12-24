@@ -193,7 +193,7 @@ class ViewController: UIViewController {
         default : break
         }
         
-        let hop:Float = fabs(max - min) / 120.0 // less sensitive
+        let hop:Float = abs(max - min) / 120.0 // less sensitive
         paramXY.initializeFloat1(&control.p0, min, max, hop, "P 1,2")
         paramXY.initializeFloat2(&control.p1)
         paramZ.initializeFloat(&control.p2, .delta, min,max, hop, "P 3")
